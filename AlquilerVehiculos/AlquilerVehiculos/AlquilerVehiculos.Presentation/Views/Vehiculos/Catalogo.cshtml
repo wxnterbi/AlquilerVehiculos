@@ -1,0 +1,38 @@
+﻿@model IEnumerable<AlquilerVehiculos.Domain.Entities.Vehiculo>
+
+@{
+    ViewData["Title"] = "Catálogo de Vehículos";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Catálogo de Vehículos Disponibles</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="Buscar por marca o modelo..." />
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-secondary w-100">Filtrar</button>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var vehiculo in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="bg-light p-4 mb-3 rounded">
+                            <i class="bi bi-car-front display-1"></i>
+                            <p class="text-muted mt-2">[Imagen del Vehículo]</p>
+                        </div>
+                        <h5 class="card-title">@vehiculo.Marca @vehiculo.Modelo (@vehiculo.Ano)</h5>
+                        <p class="card-text text-muted mb-1">Categoría: @vehiculo.Categoria | Transmisión: @vehiculo.Transmision</p>
+                        <h4 class="text-primary my-3">DOP $@vehiculo.PrecioPorDia / día</h4>
+                        <a href="#" class="btn btn-primary w-100">Reservar Ahora</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

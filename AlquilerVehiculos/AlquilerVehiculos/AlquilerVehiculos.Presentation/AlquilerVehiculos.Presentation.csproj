@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AlquilerVehiculos.Application\AlquilerVehiculos.Application.csproj" />
+    <ProjectReference Include="..\AlquilerVehiculos.Domain\AlquilerVehiculos.Domain.csproj" />
     <ProjectReference Include="..\AlquilerVehiculos.Infrastructure\AlquilerVehiculos.Infrastructure.csproj" />
   </ItemGroup>
 
