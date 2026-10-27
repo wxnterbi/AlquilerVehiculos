@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">INICIO DE SESION</h3>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <form asp-action="Login" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Correo</label>
+                            <input type="email" name="correo" class="form-control" placeholder="ejemplo@correo.com" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" name="contrasena" class="form-control" placeholder="********" required />
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Iniciar</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">Crear cuenta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
