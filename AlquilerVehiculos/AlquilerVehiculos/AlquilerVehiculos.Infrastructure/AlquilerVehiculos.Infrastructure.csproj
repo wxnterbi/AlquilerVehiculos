@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="ErrorHandling\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AlquilerVehiculos.Application\AlquilerVehiculos.Application.csproj" />
+    <ProjectReference Include="..\AlquilerVehiculos.Persistence\AlquilerVehiculos.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
