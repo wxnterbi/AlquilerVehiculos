@@ -1,4 +1,6 @@
-﻿@{
+@model SistemadeRenta.Presentation.Models.LoginViewModel
+
+@{
     ViewData["Title"] = "Iniciar Sesión";
 }
 
@@ -7,23 +9,26 @@
         <div class="col-md-5">
             <div class="card shadow">
                 <div class="card-body">
-                    <h3 class="text-center mb-4">INICIO DE SESION</h3>
-
-                    @if (ViewBag.Error != null)
-                    {
-                        <div class="alert alert-danger" role="alert">
-                            @ViewBag.Error
-                        </div>
-                    }
+                    <h3 class="text-center mb-4">INICIO DE SESIÓN</h3>
 
                     <form asp-action="Login" method="post">
+                        <input type="hidden" asp-for="ReturnUrl" />
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
                         <div class="mb-3">
-                            <label class="form-label">Correo</label>
-                            <input type="email" name="correo" class="form-control" placeholder="ejemplo@correo.com" required />
+                            <label asp-for="Correo" class="form-label"></label>
+                            <input asp-for="Correo" class="form-control" placeholder="ejemplo@correo.com" autocomplete="username" />
+                            <span asp-validation-for="Correo" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Contraseña</label>
-                            <input type="password" name="contrasena" class="form-control" placeholder="********" required />
+                            <label asp-for="Contrasena" class="form-label"></label>
+                            <input asp-for="Contrasena" class="form-control" placeholder="********" autocomplete="current-password" />
+                            <span asp-validation-for="Contrasena" class="text-danger"></span>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="Recordarme" class="form-check-input" />
+                            <label asp-for="Recordarme" class="form-check-label"></label>
                         </div>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Iniciar</button>
@@ -31,10 +36,14 @@
                     </form>
 
                     <div class="text-center mt-3">
-                        <a href="#" class="text-decoration-none">Crear cuenta</a>
+                        <a asp-action="Registro" class="text-decoration-none">Crear cuenta</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

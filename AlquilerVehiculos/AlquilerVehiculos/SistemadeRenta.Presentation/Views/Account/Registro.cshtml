@@ -1,0 +1,53 @@
+@model SistemadeRenta.Presentation.Models.RegistroViewModel
+
+@{
+    ViewData["Title"] = "Crear cuenta";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">CREAR CUENTA</h3>
+
+                    <form asp-action="Registro" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label"></label>
+                            <input asp-for="Nombre" class="form-control" autocomplete="name" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Correo" class="form-label"></label>
+                            <input asp-for="Correo" class="form-control" placeholder="ejemplo@correo.com" autocomplete="username" />
+                            <span asp-validation-for="Correo" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Contrasena" class="form-label"></label>
+                            <input asp-for="Contrasena" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="Contrasena" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ConfirmarContrasena" class="form-label"></label>
+                            <input asp-for="ConfirmarContrasena" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="ConfirmarContrasena" class="text-danger"></span>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Crear cuenta</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <a asp-action="Login" class="text-decoration-none">Ya tengo cuenta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
