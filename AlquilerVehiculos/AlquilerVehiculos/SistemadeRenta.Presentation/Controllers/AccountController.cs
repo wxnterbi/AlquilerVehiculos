@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AlquilerVehiculos.Presentation.Controllers
+namespace SistemadeRenta.Presentation.Controllers
 {
     public class AccountController : Controller
     {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AlquilerVehiculos.Presentation.Views.Account
+namespace SistemadeRenta.Presentation.Views.Account
 {
     public class LoginModel : PageModel
     {

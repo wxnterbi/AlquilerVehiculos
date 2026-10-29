@@ -1,4 +1,4 @@
-namespace AlquilerVehiculos.Presentation.Models
+namespace SistemadeRenta.Presentation.Models
 {
     public class ErrorViewModel
     {

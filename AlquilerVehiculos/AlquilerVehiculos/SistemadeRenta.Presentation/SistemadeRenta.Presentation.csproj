@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>151513d1-7173-45c9-af71-7a28b02b5bdf</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SistemadeRenta.Application\SistemadeRenta.Application.csproj" />
+    <ProjectReference Include="..\SistemadeRenta.Domain\SistemadeRenta.Domain.csproj" />
+    <ProjectReference Include="..\SistemadeRenta.Infrastructure\SistemadeRenta.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

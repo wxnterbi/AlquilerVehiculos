@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SistemadeRenta.Application/SistemadeRenta.Application.csproj" Id="33901464-ec67-46c2-9aa2-3ccb5f477c73" />
+  <Project Path="SistemadeRenta.Domain/SistemadeRenta.Domain.csproj" />
+  <Project Path="SistemadeRenta.Infrastructure/SistemadeRenta.Infrastructure.csproj" />
+  <Project Path="SistemadeRenta.Persistence/SistemadeRenta.Persistence.csproj" />
+  <Project Path="SistemadeRenta.Presentation/SistemadeRenta.Presentation.csproj" Id="867f3112-9ad6-48a6-bf62-526b9cdbd041" />
+</Solution>

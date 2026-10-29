@@ -1,7 +1,0 @@
-<Solution>
-  <Project Path="AlquilerVehiculos.Application/AlquilerVehiculos.Application.csproj" Id="33901464-ec67-46c2-9aa2-3ccb5f477c73" />
-  <Project Path="AlquilerVehiculos.Domain/AlquilerVehiculos.Domain.csproj" />
-  <Project Path="AlquilerVehiculos.Infrastructure/AlquilerVehiculos.Infrastructure.csproj" />
-  <Project Path="AlquilerVehiculos.Persistence/AlquilerVehiculos.Persistence.csproj" />
-  <Project Path="AlquilerVehiculos.Presentation/AlquilerVehiculos.Presentation.csproj" Id="867f3112-9ad6-48a6-bf62-526b9cdbd041" />
-</Solution>

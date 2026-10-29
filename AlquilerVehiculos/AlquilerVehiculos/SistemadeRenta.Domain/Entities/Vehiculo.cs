@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlquilerVehiculos.Domain.Entities
+namespace SistemadeRenta.Domain.Entities
 {
     public class Vehiculo
     {

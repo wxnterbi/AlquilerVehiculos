@@ -1,8 +1,8 @@
-using AlquilerVehiculos.Presentation.Models;
+using SistemadeRenta.Presentation.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace AlquilerVehiculos.Presentation.Controllers
+namespace SistemadeRenta.Presentation.Controllers
 {
     public class HomeController : Controller
     {

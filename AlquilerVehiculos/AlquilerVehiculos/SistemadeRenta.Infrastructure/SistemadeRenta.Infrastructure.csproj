@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AlquilerVehiculos.Application\AlquilerVehiculos.Application.csproj" />
-    <ProjectReference Include="..\AlquilerVehiculos.Persistence\AlquilerVehiculos.Persistence.csproj" />
+    <ProjectReference Include="..\SistemadeRenta.Application\SistemadeRenta.Application.csproj" />
+    <ProjectReference Include="..\SistemadeRenta.Persistence\SistemadeRenta.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
