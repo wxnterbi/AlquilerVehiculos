@@ -48,7 +48,7 @@ Cada integrante debe configurar la conexión en su computadora:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "CADENA_DE_CONEXION_DEL_EQUIPO"
+    "DefaultConnection": "Poner la linea de conexión aqui"
   }
 }
 ```
