@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AlquilerVehiculos.Domain.Entities;
+using SistemadeRenta.Domain.Entities;
 using System.Collections.Generic;
 
-namespace AlquilerVehiculos.Presentation.Controllers
+namespace SistemadeRenta.Presentation.Controllers
 {
     public class VehiculosController : Controller
     {

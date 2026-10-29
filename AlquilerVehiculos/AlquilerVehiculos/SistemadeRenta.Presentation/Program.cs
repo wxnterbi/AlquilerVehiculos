@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using AlquilerVehiculos.Persistence.Context;
+using SistemadeRenta.Persistence.Context;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<AlquilerVehiculosContext>(options =>
+builder.Services.AddDbContext<SistemadeRentaContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
