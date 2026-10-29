@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SistemadeRenta.Domain.Entities;
 using System.Collections.Generic;
 
 namespace SistemadeRenta.Presentation.Controllers
 {
+    [Authorize]
     public class VehiculosController : Controller
     {
         [HttpGet]
