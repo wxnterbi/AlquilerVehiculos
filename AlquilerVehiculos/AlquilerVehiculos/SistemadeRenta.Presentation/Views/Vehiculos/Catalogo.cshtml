@@ -1,38 +1,164 @@
-﻿@model IEnumerable<SistemadeRenta.Domain.Entities.Vehiculo>
+﻿@model IEnumerable<SistemadeRenta.Presentation.Models.VehiculoConFotosViewModel>
 
 @{
-    ViewData["Title"] = "Catálogo de Vehículos";
+    ViewData["Title"] = "Catálogo de vehículos";
+
+    string NombreCategoria(string? categoria)
+    {
+        var nombre = (categoria ?? "").Trim();
+
+        return nombre.ToUpperInvariant() switch
+        {
+            "SEDAN" or "SEDÁN" => "Sedán",
+            "SUV" => "SUV",
+            "" => "Sin categoría",
+            _ => nombre
+        };
+    }
+
+    var grupos = Model
+        .GroupBy(item => NombreCategoria(item.Vehiculo.Categoria))
+        .OrderBy(grupo => grupo.Key)
+        .ToList();
 }
 
-<div class="container mt-4">
-    <h2 class="mb-4 text-center">Catálogo de Vehículos Disponibles</h2>
+<div class="container mt-4 mb-5">
+    <div class="d-flex flex-wrap justify-content-between
+        align-items-center gap-3 mb-4">
+        <h1 class="mb-0">Catálogo de vehículos</h1>
 
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="Buscar por marca o modelo..." />
-        </div>
-        <div class="col-md-4">
-            <button class="btn btn-secondary w-100">Filtrar</button>
-        </div>
-    </div>
-
-    <div class="row">
-        @foreach (var vehiculo in Model)
+        @if (User.IsInRole("Administrador"))
         {
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <div class="bg-light p-4 mb-3 rounded">
-                            <i class="bi bi-car-front display-1"></i>
-                            <p class="text-muted mt-2">[Imagen del Vehículo]</p>
-                        </div>
-                        <h5 class="card-title">@vehiculo.Marca @vehiculo.Modelo (@vehiculo.Ano)</h5>
-                        <p class="card-text text-muted mb-1">Categoría: @vehiculo.Categoria | Transmisión: @vehiculo.Transmision</p>
-                        <h4 class="text-primary my-3">DOP $@vehiculo.PrecioPorDia / día</h4>
-                        <a href="#" class="btn btn-primary w-100">Reservar Ahora</a>
-                    </div>
-                </div>
-            </div>
+            <a asp-controller="Vehiculos"
+               asp-action="Crear"
+               class="btn btn-primary">
+                Registrar vehículo
+            </a>
         }
     </div>
+
+    @if (TempData["Exito"] is string mensaje)
+    {
+        <div class="alert alert-success" role="status">
+            @mensaje
+        </div>
+    }
+
+    <form asp-controller="Vehiculos"
+          asp-action="Catalogo"
+          method="get"
+          class="row g-2 mb-4">
+
+        <div class="col-md-8">
+            <label for="buscar" class="visually-hidden">
+                Buscar por marca o modelo
+            </label>
+
+            <input type="search"
+                   id="buscar"
+                   name="buscar"
+                   value="@ViewData["Buscar"]"
+                   class="form-control"
+                   placeholder="Buscar por marca o modelo..." />
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+                Buscar
+            </button>
+        </div>
+
+        <div class="col-md-2">
+            <a asp-action="Catalogo"
+               class="btn btn-outline-secondary w-100">
+                Ver todos
+            </a>
+        </div>
+    </form>
+
+    @if (grupos.Count == 0)
+    {
+        <div class="alert alert-info">
+            No se encontraron vehículos.
+        </div>
+    }
+
+    @foreach (var grupo in grupos)
+    {
+        <section class="mb-5">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <h2 class="mb-0">@grupo.Key</h2>
+                <span class="badge bg-secondary">
+                    @grupo.Count()
+                </span>
+            </div>
+
+            <div class="row g-4">
+                @foreach (var item in grupo)
+                {
+                    var vehiculo = item.Vehiculo;
+                    var principal = item.Fotos.FirstOrDefault();
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <article class="card h-100 shadow-sm">
+                            <a asp-action="Detalles"
+                               asp-route-id="@vehiculo.IdVehiculo"
+                               class="d-block"
+                               aria-label="@($"Ver detalles de {vehiculo.Marca} {vehiculo.Modelo}")">
+
+                                @if (!string.IsNullOrWhiteSpace(principal))
+                                {
+                                    <img src="@principal"
+                                         alt="@($"{vehiculo.Marca} {vehiculo.Modelo}")"
+                                         class="card-img-top"
+                                         loading="lazy"
+                                         style="width:100%; height:230px; object-fit:cover;" />
+                                }
+                                else
+                                {
+                                    <div class="bg-light text-secondary
+                                        d-flex align-items-center
+                                        justify-content-center"
+                                         style="height:230px;">
+                                        Sin foto disponible
+                                    </div>
+                                }
+                            </a>
+
+                            <div class="card-body d-flex flex-column">
+                                <h3 class="h5 card-title">
+                                    <a asp-action="Detalles"
+                                       asp-route-id="@vehiculo.IdVehiculo"
+                                       class="text-decoration-none text-dark">
+                                        @vehiculo.Marca @vehiculo.Modelo
+                                        (@vehiculo.Ano)
+                                    </a>
+                                </h3>
+
+                                <p class="text-muted mb-2">
+                                    @grupo.Key · @vehiculo.Transmision
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Estado:</strong>
+                                    @vehiculo.Estado
+                                </p>
+
+                                <p class="h4 text-primary mb-3">
+                                    USD $@vehiculo.PrecioPorDia.ToString("N2")
+                                    <small class="fs-6 text-muted">/ día</small>
+                                </p>
+
+                                <a asp-action="Detalles"
+                                   asp-route-id="@vehiculo.IdVehiculo"
+                                   class="btn btn-primary w-100 mt-auto">
+                                    Ver detalles
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                }
+            </div>
+        </section>
+    }
 </div>

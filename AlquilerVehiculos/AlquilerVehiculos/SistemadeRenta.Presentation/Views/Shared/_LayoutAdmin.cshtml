@@ -1,0 +1,87 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"] - Sistema de Renta</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@@tabler/core@@1.0.0/dist/css/tabler.min.css" />
+</head>
+
+<body>
+    <div class="page">
+        <header class="navbar navbar-expand-md">
+            <div class="container-xl">
+                <a class="navbar-brand"
+                   asp-controller="Vehiculos"
+                   asp-action="Catalogo">
+                    Sistema de Renta
+                </a>
+
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-secondary">
+                        Hola, @User.Identity?.Name
+                    </span>
+
+                    <form asp-controller="Account"
+                          asp-action="Logout"
+                          method="post">
+                        <button type="submit"
+                                class="btn btn-outline-secondary">
+                            Cerrar sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </header>
+
+        <div class="navbar">
+            <div class="container-xl">
+                <nav class="d-flex flex-wrap gap-2"
+                     aria-label="Menú de administración">
+
+                    <a class="btn btn-ghost-secondary"
+                       asp-controller="Vehiculos"
+                       asp-action="Catalogo">
+                        Ver catálogo
+                    </a>
+
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <a class="btn btn-primary"
+                           asp-controller="Vehiculos"
+                           asp-action="Crear">
+                            Registrar vehículo
+                        </a>
+                    }
+                </nav>
+            </div>
+        </div>
+
+        <div class="page-wrapper">
+            <main class="page-body">
+                <div class="container-xl">
+                    @RenderBody()
+                </div>
+            </main>
+
+            <footer class="footer">
+                <div class="container-xl text-secondary">
+                    &copy; @DateTime.Now.Year - Sistema de Renta
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@@tabler/core@@1.0.0/dist/js/tabler.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

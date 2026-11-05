@@ -1,0 +1,141 @@
+﻿@model SistemadeRenta.Presentation.Models.VehiculoConFotosViewModel
+
+@{
+    var vehiculo = Model.Vehiculo;
+    var principal = Model.Fotos.FirstOrDefault();
+
+    ViewData["Title"] = $"{vehiculo.Marca} {vehiculo.Modelo}";
+
+    var categoria = vehiculo.Categoria;
+
+    if (string.Equals(
+        categoria, "Sedan", StringComparison.OrdinalIgnoreCase))
+    {
+        categoria = "Sedán";
+    }
+}
+@if (User.IsInRole("Administrador"))
+{
+    <a asp-action="Editar"
+       asp-route-id="@Model.Vehiculo.IdVehiculo"
+       class="btn btn-primary mb-4">
+        Editar vehículo
+    </a>
+
+    <a asp-action="Eliminar"
+       asp-route-id="@Model.Vehiculo.IdVehiculo"
+       class="btn btn-outline-danger mb-4">
+        Eliminar vehículo
+    </a>
+}
+
+<div class="container mt-4 mb-5">
+    <a asp-action="Catalogo"
+       class="btn btn-outline-secondary mb-4">
+        Volver al catálogo
+    </a>
+
+    @if (TempData["Exito"] is string mensaje)
+    {
+        <div class="alert alert-success" role="status">
+            @mensaje
+        </div>
+    }
+
+    <h1 class="mb-4">
+        @vehiculo.Marca @vehiculo.Modelo (@vehiculo.Ano)
+    </h1>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            @if (!string.IsNullOrWhiteSpace(principal))
+            {
+                <div class="card overflow-hidden">
+                    <img id="fotoPrincipal"
+                         src="@principal"
+                         alt="@($"Foto principal de {vehiculo.Marca} {vehiculo.Modelo}")"
+                         class="w-100"
+                         style="height:420px; object-fit:contain; background:#f5f5f5;" />
+                </div>
+
+                <h2 class="h5 mt-4">Fotos del vehículo</h2>
+
+                <div class="row g-2">
+                    @for (var i = 0; i < Model.Fotos.Count; i++)
+                    {
+                        <div class="col-4 col-md-3">
+                            <button type="button"
+                                    class="btn p-0 border rounded overflow-hidden w-100"
+                                    data-foto="@Model.Fotos[i]"
+                                    aria-label="@($"Mostrar foto {i + 1}")">
+
+                                <img src="@Model.Fotos[i]"
+                                     alt="@($"Foto {i + 1} de {vehiculo.Marca} {vehiculo.Modelo}")"
+                                     loading="lazy"
+                                     class="w-100"
+                                     style="height:100px; object-fit:cover;" />
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Este vehículo todavía no tiene fotos.
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="h4 mb-4">Datos del vehículo</h2>
+
+                    <dl class="row">
+                        <dt class="col-5">Marca</dt>
+                        <dd class="col-7">@vehiculo.Marca</dd>
+
+                        <dt class="col-5">Modelo</dt>
+                        <dd class="col-7">@vehiculo.Modelo</dd>
+
+                        <dt class="col-5">Año</dt>
+                        <dd class="col-7">@vehiculo.Ano</dd>
+
+                        <dt class="col-5">Categoría</dt>
+                        <dd class="col-7">@categoria</dd>
+
+                        <dt class="col-5">Transmisión</dt>
+                        <dd class="col-7">@vehiculo.Transmision</dd>
+
+                        <dt class="col-5">Estado</dt>
+                        <dd class="col-7">@vehiculo.Estado</dd>
+                    </dl>
+
+                    <hr />
+
+                    <p class="text-muted mb-1">Precio por día</p>
+
+                    <p class="h3 text-primary mb-0">
+                        USD $@vehiculo.PrecioPorDia.ToString("N2")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const fotoPrincipal = document.getElementById("fotoPrincipal");
+
+        document.querySelectorAll("button[data-foto]").forEach(boton => {
+            boton.addEventListener("click", () => {
+                if (!fotoPrincipal) return;
+
+                fotoPrincipal.src = boton.dataset.foto;
+                fotoPrincipal.alt = boton.querySelector("img").alt;
+            });
+        });
+    </script>
+}
