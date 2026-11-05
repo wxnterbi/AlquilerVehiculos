@@ -1,0 +1,71 @@
+﻿@model SistemadeRenta.Presentation.Models.VehiculoConFotosViewModel
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Eliminar vehículo";
+    var vehiculo = Model.Vehiculo;
+}
+
+<div class="mb-4">
+    <div class="text-secondary">Administración de vehículos</div>
+    <h1>Eliminar vehículo</h1>
+</div>
+
+<div asp-validation-summary="All"
+     class="text-danger mb-3"
+     role="alert"></div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-5">
+                @if (Model.Fotos.Count > 0)
+                {
+                    <img src="@Model.Fotos[0]"
+                         alt="@($"{vehiculo.Marca} {vehiculo.Modelo}")"
+                         class="rounded w-100"
+                         style="height:260px; object-fit:cover;" />
+                }
+                else
+                {
+                    <p class="text-secondary">Sin foto disponible.</p>
+                }
+            </div>
+
+            <div class="col-md-7">
+                <h2 class="h3">
+                    @vehiculo.Marca @vehiculo.Modelo (@vehiculo.Ano)
+                </h2>
+
+                <p><strong>Placa:</strong> @vehiculo.Placa</p>
+                <p><strong>Categoría:</strong> @vehiculo.Categoria</p>
+                <p><strong>Estado:</strong> @vehiculo.Estado</p>
+
+                <div class="alert alert-warning">
+                    Al confirmar se eliminarán el vehículo y sus fotos.
+                    Esta acción no se puede deshacer.
+                    Si tiene reservas o contratos asociados,
+                    la eliminación será bloqueada.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form asp-controller="Vehiculos"
+      asp-action="Eliminar"
+      asp-route-id="@vehiculo.IdVehiculo"
+      method="post">
+
+    <div class="d-flex gap-2 mb-4">
+        <button type="submit" class="btn btn-danger">
+            Confirmar eliminación
+        </button>
+
+        <a asp-action="Detalles"
+           asp-route-id="@vehiculo.IdVehiculo"
+           class="btn btn-outline-secondary">
+            Cancelar
+        </a>
+    </div>
+</form>

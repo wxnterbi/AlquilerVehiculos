@@ -1,0 +1,470 @@
+﻿@model SistemadeRenta.Presentation.Models.EditarVehiculoViewModel
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Editar vehículo";
+}
+
+<div class="mb-4">
+    <div class="text-secondary">Administración de vehículos</div>
+    <h1>Editar vehículo</h1>
+    <p class="text-secondary">
+        Consulta y modifica los datos del vehículo.
+    </p>
+</div>
+
+<form asp-controller="Vehiculos"
+      asp-action="Editar"
+      asp-route-id="@Model.IdVehiculo"
+      method="post"
+      enctype="multipart/form-data"
+      id="formularioEditar">
+
+    <input asp-for="IdVehiculo" type="hidden" />
+
+    <div asp-validation-summary="All"
+         class="text-danger mb-3"
+         role="alert"></div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="card-title">Datos del vehículo</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Marca" class="form-label"></label>
+                    <input asp-for="Marca" class="form-control"
+                           maxlength="80" />
+                    <span asp-validation-for="Marca"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Modelo" class="form-label"></label>
+                    <input asp-for="Modelo" class="form-control"
+                           maxlength="100" />
+                    <span asp-validation-for="Modelo"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Ano" class="form-label"></label>
+                    <input asp-for="Ano" class="form-control"
+                           type="number" min="2010" max="2100" />
+                    <span asp-validation-for="Ano"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Placa" class="form-label"></label>
+                    <input asp-for="Placa" class="form-control"
+                           maxlength="20" />
+                    <span asp-validation-for="Placa"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Categoria" class="form-label"></label>
+                    <select asp-for="Categoria" class="form-select">
+                        <option value="">Selecciona una categoría</option>
+                        <option value="Sedan">Sedán</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Compacto">Compacto</option>
+                        <option value="Camioneta">Camioneta</option>
+                        <option value="Minivan">Minivan</option>
+                    </select>
+                    <span asp-validation-for="Categoria"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Transmision" class="form-label"></label>
+                    <select asp-for="Transmision" class="form-select">
+                        <option value="">Selecciona la transmisión</option>
+                        <option value="Automática">Automática</option>
+                        <option value="Manual">Manual</option>
+                    </select>
+                    <span asp-validation-for="Transmision"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PrecioPorDia" class="form-label"></label>
+                    <input asp-for="PrecioPorDia" class="form-control"
+                           type="number" min="1"
+                           max="99999999.99" step="0.01" />
+                    <span asp-validation-for="PrecioPorDia"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Estado" class="form-label"></label>
+                    <select asp-for="Estado" class="form-select">
+                        <option value="Disponible">Disponible</option>
+                        <option value="No disponible">No disponible</option>
+                    </select>
+                    <span asp-validation-for="Estado"
+                          class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="card-title">Fotos del vehículo</h2>
+        </div>
+
+        <div class="card-body">
+
+            <p class="text-secondary">
+                Marca las fotos que deseas quitar y agrega nuevas si lo necesitas.
+                Al guardar debes conservar entre 5 y 10 fotos en total.
+            </p>
+
+            <span asp-validation-for="FotosEliminar"
+                  class="text-danger d-block mb-3"></span>
+
+            <div class="row g-3">
+                @foreach (var foto in Model.FotosActuales)
+                {
+                    <div class="col-6 col-md-3">
+                        <img src="@foto.ImagenUrl"
+                             alt="@($"Foto {foto.Orden} del vehículo")"
+                             class="rounded w-100"
+                             style="height:150px; object-fit:cover;" />
+
+                        
+                        <div class="small mt-1">
+                            @(foto.IdVehiculoImagen == Model.IdFotoPrincipal
+                                ? "Foto principal"
+                                : $"Foto {foto.Orden}")
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox"
+                                   name="FotosEliminar"
+                                   id="quitar-@foto.IdVehiculoImagen"
+                                   value="@foto.IdVehiculoImagen"
+                                   checked="@(Model.FotosEliminar.Contains(foto.IdVehiculoImagen))"
+                                   class="form-check-input" />
+
+                            <label for="quitar-@foto.IdVehiculoImagen"
+                                   class="form-check-label">
+                                Quitar foto
+                            </label>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+
+            <hr />
+
+            
+
+            [Display(Name = "Agregar fotos")]
+            [MaxLength(10,
+            ErrorMessage = "Puedes agregar un máximo de 10 fotos nuevas.")]
+            public List<IFormFile>
+            ? FotosNuevas { get; set; }
+
+            <input asp-for="FotosNuevas"
+                   type="file"
+                   class="form-control"
+                   accept=".jpg,.jpeg,.png"
+                   multiple />
+
+            <div class="form-hint">
+                Puedes seleccionar una foto o varias y después agregar otras.
+                El total final debe ser entre 5 y 10 fotos.
+            </div>
+
+            <span asp-validation-for="FotosNuevas"
+                  class="text-danger"></span>
+
+            <p id="errorFotosNuevas"
+               class="text-danger mt-2"
+               role="alert"></p>
+
+            <p id="contadorEdicion"
+               class="mt-3"
+               aria-live="polite"></p>
+
+            <div id="vistaPreviaNuevas" class="row g-3"></div>
+
+            
+        </div>
+    </div>
+
+        <div class="d-flex gap-2 mb-4">
+            <button type="submit"
+                    class="btn btn-primary">
+                
+                Guardar cambios
+            </button>
+
+            <a asp-action="Detalles"
+               asp-route-id="@Model.IdVehiculo"
+               class="btn btn-outline-secondary">
+                Volver a los detalles
+            </a>
+        </div>
+        </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const formulario = document.getElementById("formularioEditar");
+        const selector = document.getElementById("FotosNuevas");
+        selector.removeAttribute("required");
+        selector.removeAttribute("data-val-required");
+        const vistaPrevia = document.getElementById("vistaPreviaNuevas");
+        const contador = document.getElementById("contadorEdicion");
+        const errores = document.getElementById("errorFotosNuevas");
+        const botonGuardar = formulario.querySelector('button[type="submit"]');
+        const casillas = Array.from(
+            formulario.querySelectorAll('input[name="FotosEliminar"]')
+        );
+
+        const cantidadActual = @Model.FotosActuales.Count;
+        const nuevas = [];
+        const limite = 5 * 1024 * 1024;
+        let preparando = false;
+        let enviando = false;
+
+        // La cantidad se valida sumando las fotos actuales y las nuevas.
+        selector.removeAttribute("data-val-maxlength");
+        selector.removeAttribute("data-val-maxlength-max");
+
+        function actualizar() {
+            const transferencia = new DataTransfer();
+            vistaPrevia.replaceChildren();
+
+            nuevas.forEach((foto, indice) => {
+                transferencia.items.add(foto.archivo);
+
+                const columna = document.createElement("div");
+                columna.className = "col-6 col-md-3";
+
+                const imagen = document.createElement("img");
+                imagen.src = foto.url;
+                imagen.alt = `Foto nueva ${indice + 1}`;
+                imagen.className = "rounded w-100";
+                imagen.style.height = "150px";
+                imagen.style.objectFit = "cover";
+
+                const etiqueta = document.createElement("div");
+                etiqueta.className = "small mt-1";
+                etiqueta.textContent = `Foto nueva ${indice + 1}`;
+
+                const quitar = document.createElement("button");
+                quitar.type = "button";
+                quitar.className = "btn btn-outline-danger btn-sm mt-2";
+                quitar.textContent = "Quitar selección";
+                quitar.disabled = preparando || enviando;
+
+                quitar.addEventListener("click", () => {
+                    URL.revokeObjectURL(foto.url);
+                    nuevas.splice(indice, 1);
+                    actualizar();
+                });
+
+                columna.append(imagen, etiqueta, quitar);
+                vistaPrevia.append(columna);
+            });
+
+            selector.files = transferencia.files;
+
+            const eliminadas = casillas.filter(c => c.checked).length;
+            const total = cantidadActual - eliminadas + nuevas.length;
+
+            contador.textContent =
+                `${cantidadActual} actuales − ${eliminadas} para quitar `
+                + `+ ${nuevas.length} nuevas = ${total} fotos al guardar.`;
+
+            selector.setCustomValidity(
+                total < 5 || total > 10
+                    ? "El vehículo debe quedar con entre 5 y 10 fotos."
+                    : ""
+            );
+        }
+
+        async function prepararFoto(original) {
+            if (!/\.(jpg|jpeg|png)$/i.test(original.name)) {
+                throw new Error("Usa fotos JPG o PNG.");
+            }
+
+            if (original.size === 0) {
+                throw new Error("El archivo está vacío.");
+            }
+
+            if (original.size <= limite) {
+                return original;
+            }
+
+            const url = URL.createObjectURL(original);
+
+            try {
+                const imagen = new Image();
+                imagen.src = url;
+                await imagen.decode();
+
+                const escala = Math.min(
+                    1,
+                    2560 / Math.max(
+                        imagen.naturalWidth,
+                        imagen.naturalHeight
+                    )
+                );
+
+                const canvas = document.createElement("canvas");
+                canvas.width = Math.max(
+                    1, Math.round(imagen.naturalWidth * escala)
+                );
+                canvas.height = Math.max(
+                    1, Math.round(imagen.naturalHeight * escala)
+                );
+
+                const contexto = canvas.getContext("2d");
+
+                if (!contexto) {
+                    throw new Error("No se pudo preparar la foto.");
+                }
+
+                contexto.fillStyle = "#ffffff";
+                contexto.fillRect(0, 0, canvas.width, canvas.height);
+                contexto.drawImage(
+                    imagen, 0, 0, canvas.width, canvas.height
+                );
+
+                for (const calidad of [0.92, 0.85, 0.75]) {
+                    const blob = await new Promise(resolve => {
+                        canvas.toBlob(resolve, "image/jpeg", calidad);
+                    });
+
+                    if (!blob || blob.type !== "image/jpeg") {
+                        throw new Error("No se pudo crear la copia JPG.");
+                    }
+
+                    if (blob.size <= limite) {
+                        return new File(
+                            [blob],
+                            original.name.replace(/\.[^.]+$/, "") + ".jpg",
+                            {
+                                type: "image/jpeg",
+                                lastModified: original.lastModified
+                            }
+                        );
+                    }
+                }
+
+                throw new Error("La copia todavía supera los 5 MB.");
+            } finally {
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        selector.addEventListener("change", async () => {
+            if (preparando || enviando) return;
+
+            const seleccionadas = Array.from(selector.files);
+            selector.value = "";
+            errores.textContent = "";
+
+            preparando = true;
+            selector.disabled = true;
+            botonGuardar.disabled = true;
+            botonGuardar.textContent = "Preparando fotos...";
+            actualizar();
+
+            const mensajes = [];
+
+            try {
+                for (const original of seleccionadas) {
+                    const clave =
+                        `${original.name}|${original.size}|${original.lastModified}`;
+
+                    if (nuevas.some(f => f.clave === clave)) continue;
+
+                    if (nuevas.length >= 10) {
+                        mensajes.push(
+                            "Puedes seleccionar un máximo de 10 fotos nuevas."
+                        );
+                        break;
+                    }
+
+                    try {
+                        const archivo = await prepararFoto(original);
+
+                        nuevas.push({
+                            archivo,
+                            clave,
+                            url: URL.createObjectURL(archivo)
+                        });
+
+                        actualizar();
+                    } catch (error) {
+                        mensajes.push(
+                            `${original.name}: ${error instanceof Error
+                                ? error.message
+                                : "No se pudo preparar la foto."
+                            }`
+                        );
+                    }
+                }
+            } finally {
+                preparando = false;
+                selector.disabled = false;
+                botonGuardar.disabled = false;
+                botonGuardar.textContent = "Guardar cambios";
+                actualizar();
+                errores.textContent = mensajes.join(" ");
+            }
+        });
+
+        casillas.forEach(casilla => {
+            casilla.addEventListener("change", actualizar);
+        });
+
+        selector.addEventListener("cancel", actualizar);
+
+        formulario.addEventListener("submit", evento => {
+            if (preparando || enviando) {
+                evento.preventDefault();
+                return;
+            }
+
+            actualizar();
+
+            if (!formulario.checkValidity()) {
+                evento.preventDefault();
+                formulario.reportValidity();
+                return;
+            }
+
+            if (window.jQuery &&
+                jQuery.fn.valid &&
+                !jQuery(formulario).valid()) {
+                evento.preventDefault();
+                return;
+            }
+
+            enviando = true;
+            botonGuardar.disabled = true;
+            botonGuardar.textContent = "Subiendo fotos y guardando...";
+
+            vistaPrevia.querySelectorAll("button").forEach(boton => {
+                boton.disabled = true;
+            });
+        });
+
+        actualizar();
+    </script>
+}
+
+
+        
