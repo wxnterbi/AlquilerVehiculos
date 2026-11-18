@@ -1,0 +1,81 @@
+﻿@model SistemadeRenta.Presentation.Models.ConsultarReservaViewModel
+
+@{
+    ViewData["Title"] = "Consultar mi reserva";
+}
+
+<div class="container mt-5 mb-5">
+    <h2>Consultar mi reserva</h2>
+    <p>Introduce el código que recibiste al enviar tu solicitud.</p>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <form asp-action="Consultar" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="CodigoSeguimiento" class="form-label"></label>
+                    <input asp-for="CodigoSeguimiento"
+                           class="form-control"
+                           placeholder="Ejemplo: RES-00000001" />
+                    <span asp-validation-for="CodigoSeguimiento"
+                          class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Consultar solicitud
+                </button>
+            </form>
+
+            @if (Model.Reserva != null)
+            {
+                <hr />
+
+                <h4>Resultado de tu solicitud</h4>
+
+                <p>
+                    <strong>Código:</strong>
+                    @Model.Reserva.CodigoSeguimiento
+                </p>
+
+                <p>
+                    <strong>Cliente:</strong>
+                    @Model.Reserva.Cliente.Nombre
+                    @Model.Reserva.Cliente.Apellido
+                </p>
+
+                <p>
+                    <strong>Vehículo:</strong>
+                    @Model.Reserva.Vehiculo.Marca
+                    @Model.Reserva.Vehiculo.Modelo
+                </p>
+
+                <p>
+                    <strong>Fecha de recogida:</strong>
+                    @Model.Reserva.FechaInicio
+                </p>
+
+                <p>
+                    <strong>Fecha de devolución:</strong>
+                    @Model.Reserva.FechaFin
+                </p>
+
+                <p>
+                    <strong>Estado:</strong>
+                    @Model.Reserva.EstadoReserva
+                </p>
+
+                <p>
+                    <strong>Costo estimado:</strong>
+                    @Model.Reserva.CostoEstimado.ToString("C")
+                </p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
