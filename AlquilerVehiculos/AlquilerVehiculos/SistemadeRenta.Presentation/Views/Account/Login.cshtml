@@ -1,49 +1,141 @@
 @model SistemadeRenta.Presentation.Models.LoginViewModel
 
 @{
-    ViewData["Title"] = "Iniciar Sesión";
+    Layout = null;
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h3 class="text-center mb-4">INICIO DE SESIÓN</h3>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acceso administrador - Sistema de Renta</title>
 
-                    <form asp-action="Login" method="post">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@@tabler/core@@1.0.0/dist/css/tabler.min.css" />
+
+    <style>
+            body {
+                background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+                background-attachment: fixed;
+            }
+
+            .login-icon {
+                width: 64px;
+                height: 64px;
+                border-radius: 18px;
+                background: #fff;
+                color: #1e3a8a;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, .25);
+            }
+
+            .login-card {
+                border: 0;
+                border-radius: 16px;
+                box-shadow: 0 20px 45px rgba(0, 0, 0, .30);
+            }
+
+                .login-card .form-control {
+                    padding: .6rem .85rem;
+                }
+
+                .login-card .btn-primary {
+                    padding: .65rem;
+                    font-weight: 600;
+                }
+    </style>
+</head>
+
+<body class="d-flex flex-column">
+    <div class="page page-center">
+        <div class="container container-tight py-4">
+
+            <div class="text-center mb-4">
+                <div class="login-icon mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="7" cy="17" r="2" />
+                        <circle cx="17" cy="17" r="2" />
+                        <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5" />
+                    </svg>
+                </div>
+                <h2 class="mb-1 text-white">Sistema de Renta</h2>
+                <div class="text-white-50">Acceso para administradores</div>
+            </div>
+
+            <div class="card login-card">
+                <div class="card-body p-4">
+
+                    <form asp-action="Login" method="post" autocomplete="on" novalidate>
                         <input type="hidden" asp-for="ReturnUrl" />
 
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                         <div class="mb-3">
                             <label asp-for="Correo" class="form-label"></label>
-                            <input asp-for="Correo" class="form-control" placeholder="ejemplo@correo.com" autocomplete="username" />
-                            <span asp-validation-for="Correo" class="text-danger"></span>
+                            <input asp-for="Correo"
+                                   class="form-control"
+                                   placeholder="ejemplo@correo.com"
+                                   autocomplete="username"
+                                   autofocus />
+                            <span asp-validation-for="Correo" class="text-danger small"></span>
                         </div>
+
                         <div class="mb-3">
                             <label asp-for="Contrasena" class="form-label"></label>
-                            <input asp-for="Contrasena" class="form-control" placeholder="********" autocomplete="current-password" />
-                            <span asp-validation-for="Contrasena" class="text-danger"></span>
+                            <div class="input-group">
+                                <input asp-for="Contrasena"
+                                       class="form-control"
+                                       placeholder="Tu contraseña"
+                                       autocomplete="current-password" />
+                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                    Mostrar
+                                </button>
+                            </div>
+                            <span asp-validation-for="Contrasena" class="text-danger small"></span>
                         </div>
-                        <div class="form-check mb-3">
-                            <input asp-for="Recordarme" class="form-check-input" />
-                            <label asp-for="Recordarme" class="form-check-label"></label>
+
+                        <div class="mb-3">
+                            <label class="form-check">
+                                <input asp-for="Recordarme" class="form-check-input" />
+                                <span class="form-check-label">@Html.DisplayNameFor(m => m.Recordarme)</span>
+                            </label>
                         </div>
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Iniciar</button>
+
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
                         </div>
                     </form>
 
-                    <div class="text-center mt-3">
-                        <a asp-action="Registro" class="text-decoration-none">Crear cuenta</a>
-                    </div>
                 </div>
             </div>
+
+            <div class="text-center mt-3">
+                <a class="text-white" asp-controller="Reservas" asp-action="Index">&larr; Volver al catálogo</a>
+            </div>
+
+            <div class="text-center text-white-50 small mt-4">
+                &copy; @DateTime.Now.Year - Sistema de Renta
+            </div>
+
         </div>
     </div>
-</div>
 
-@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@tabler/core@@1.0.0/dist/js/tabler.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
-}
+
+    <script>
+            document.getElementById('togglePassword').addEventListener('click', function() {
+                var input = document.getElementById('Contrasena');
+                var visible = input.type === 'text';
+                input.type = visible ? 'password' : 'text';
+                this.textContent = visible ? 'Mostrar' : 'Ocultar';
+            });
+    </script>
+</body>
+</html>
