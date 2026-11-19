@@ -1,0 +1,117 @@
+﻿@model SistemadeRenta.Presentation.Models.VehiculoConFotosViewModel
+
+@{
+    var vehiculo = Model.Vehiculo;
+    var principal = Model.Fotos.FirstOrDefault();
+
+    ViewData["Title"] = "Detalles del vehículo";
+}
+
+<div class="container mt-4 mb-5">
+
+    <a asp-controller="Reservas"
+       asp-action="Index"
+       class="btn btn-outline-secondary mb-4">
+        Volver al catálogo
+    </a>
+
+    <h2 class="mb-4">
+        @vehiculo.Marca @vehiculo.Modelo
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+
+            @if (!string.IsNullOrEmpty(principal))
+            {
+                <img id="fotoPrincipal"
+                     src="@principal"
+                     class="w-100 rounded shadow-sm"
+                     style="height:400px; object-fit:contain; background:#f5f5f5;" />
+
+                <h4 class="mt-4">Fotografías del vehículo</h4>
+
+                <div class="row g-2">
+                    @foreach (var foto in Model.Fotos)
+                    {
+                        <div class="col-3">
+                            <img src="@foto"
+                                 class="img-thumbnail"
+                                 style="height:100px; width:100%; object-fit:cover; cursor:pointer;"
+                                 onclick="cambiarFoto('@foto')" />
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Este vehículo no tiene fotografías.
+                </div>
+            }
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h4>Detalles del vehículo</h4>
+
+                    <hr />
+
+                    <p><strong>Marca:</strong> @vehiculo.Marca</p>
+
+                    <p><strong>Modelo:</strong> @vehiculo.Modelo</p>
+
+                    <p><strong>Año:</strong> @vehiculo.Ano</p>
+
+                    <p><strong>Categoría:</strong> @vehiculo.Categoria</p>
+
+                    <p><strong>Transmisión:</strong> @vehiculo.Transmision</p>
+
+                    <p><strong>Estado:</strong> @vehiculo.Estado</p>
+
+                    <hr />
+
+                    <h4 class="text-primary">
+                        @vehiculo.PrecioPorDia.ToString("C")
+                    </h4>
+
+                    <small class="text-muted">Precio por día</small>
+
+                    @if (vehiculo.Estado == "Disponible")
+                    {
+                        <a asp-controller="Reservas"
+                           asp-action="Crear"
+                           asp-route-id="@vehiculo.IdVehiculo"
+                           class="btn btn-primary w-100 mt-4">
+                            Reservar vehículo
+                        </a>
+                    }
+                    else
+                    {
+                        <button class="btn btn-secondary w-100 mt-4" disabled>
+                            No disponible
+                        </button>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        function cambiarFoto(url) {
+            document.getElementById("fotoPrincipal").src = url;
+        }
+    </script>
+}
+

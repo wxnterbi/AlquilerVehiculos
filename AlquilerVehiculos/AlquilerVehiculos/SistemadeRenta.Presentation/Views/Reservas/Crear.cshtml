@@ -1,0 +1,107 @@
+﻿@model SistemadeRenta.Presentation.Models.CrearReservaViewModel
+
+@{
+    ViewData["Title"] = "Realizar reserva";
+}
+
+<div class="container mt-4 mb-5">
+
+    <h2>Realizar reserva</h2>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+
+            <h4>@Model.NombreVehiculo</h4>
+
+            <p>
+                Precio por día:
+                <strong>@Model.PrecioPorDia.ToString("C")</strong>
+            </p>
+
+            <hr />
+
+            <form asp-controller="Reservas"
+                  asp-action="Crear"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="IdVehiculo" />
+
+                <div asp-validation-summary="All"
+                     class="alert alert-danger">
+                </div>
+
+                @if (!Model.ClienteRegistrado)
+                {
+                    <h5 class="mb-3">Datos personales del cliente</h5>
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Apellido" class="form-label"></label>
+                        <input asp-for="Apellido" class="form-control" />
+                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DocumentoIdentidad" class="form-label"></label>
+                        <input asp-for="DocumentoIdentidad" class="form-control" />
+                        <span asp-validation-for="DocumentoIdentidad" class="text-danger"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        Tus datos personales ya están registrados.
+                        Se utilizarán automáticamente para esta reserva.
+                    </div>
+                }
+
+                <hr />
+
+                <h5 class="mb-3">Fechas de la reserva</h5>
+
+                <div class="mb-3">
+                    <label asp-for="FechaInicio" class="form-label"></label>
+                    <input asp-for="FechaInicio"
+                           type="datetime-local"
+                           class="form-control" />
+                    <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FechaFin" class="form-label"></label>
+                    <input asp-for="FechaFin"
+                           type="datetime-local"
+                           class="form-control" />
+                    <span asp-validation-for="FechaFin" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+
+                    <button type="submit" class="btn btn-primary">
+                        Enviar solicitud de reserva
+                    </button>
+
+                    <a asp-controller="Reservas"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Volver al catálogo
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

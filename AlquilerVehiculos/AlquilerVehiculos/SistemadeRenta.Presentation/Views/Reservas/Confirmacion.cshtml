@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Solicitud enviada";
+}
+
+<div class="container mt-5 mb-5">
+
+    <div class="card shadow text-center mx-auto"
+         style="max-width: 600px;">
+
+        <div class="card-body p-5">
+
+            <h2 class="text-success mb-3">
+                ¡Solicitud enviada correctamente!
+            </h2>
+
+            <p class="lead">
+                Tu solicitud de reserva ha sido registrada.
+            </p>
+
+            <div class="alert alert-warning mt-4">
+
+                <h5>Estado de tu solicitud</h5>
+
+                <strong>Pendiente de aprobación</strong>
+
+            </div>
+
+            <p class="mt-4">
+                Tu código de seguimiento es:
+            </p>
+
+            <h3 class="text-primary">
+                @TempData["CodigoSeguimiento"]
+            </h3>
+
+            <p class="text-muted">
+                Guarda este código. Lo necesitarás para consultar
+                el estado de tu reserva.
+            </p>
+
+            <hr />
+
+            <p>
+                Costo estimado:
+                <strong>@TempData["CostoReserva"]</strong>
+            </p>
+
+            <div class="d-grid gap-2 mt-4">
+
+                <a asp-action="Consultar"
+                   class="btn btn-primary">
+                    Consultar mi reserva
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Volver al catálogo
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
