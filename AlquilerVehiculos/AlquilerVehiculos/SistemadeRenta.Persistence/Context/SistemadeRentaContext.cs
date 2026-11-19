@@ -16,6 +16,8 @@ namespace SistemadeRenta.Persistence.Context
         public DbSet<VehiculoImagen> VehiculoImagenes => Set<VehiculoImagen>();
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Reserva> Reservas { get; set; }
+        public DbSet<AlquilerContrato> AlquilerContratos { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
