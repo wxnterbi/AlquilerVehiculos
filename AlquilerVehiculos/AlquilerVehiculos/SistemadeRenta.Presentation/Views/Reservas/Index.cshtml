@@ -1,0 +1,96 @@
+﻿@model IEnumerable<SistemadeRenta.Presentation.Models.VehiculoConFotosViewModel>
+
+@{
+    ViewData["Title"] = "Reservar vehículo";
+}
+
+<div class="container mt-4 mb-5">
+
+    <h2 class="mb-4">Vehículos disponibles para reservar</h2>
+
+    @if (Model.Any())
+    {
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                var vehiculo = item.Vehiculo;
+                var foto = item.Fotos.FirstOrDefault();
+
+                <div class="col-md-4 mb-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        @if (!string.IsNullOrEmpty(foto))
+                        {
+                            <img src="@foto"
+                                 alt="@vehiculo.Marca @vehiculo.Modelo"
+                                 class="card-img-top"
+                                 style="height:220px; object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <div class="bg-light text-center p-5">
+                                Sin foto disponible
+                            </div>
+                        }
+
+                        <div class="card-body">
+
+                            <h4 class="card-title">
+                                @vehiculo.Marca @vehiculo.Modelo
+                            </h4>
+
+                            <p><strong>Año:</strong> @vehiculo.Ano</p>
+
+                            <p><strong>Categoría:</strong> @vehiculo.Categoria</p>
+
+                            <p><strong>Transmisión:</strong> @vehiculo.Transmision</p>
+
+                            <p>
+                                <strong>Precio por día:</strong>
+                                @vehiculo.PrecioPorDia.ToString("C")
+                            </p>
+
+                            <p>
+                                <strong>Estado:</strong>
+                                <span class="badge bg-success">
+                                    @vehiculo.Estado
+                                </span>
+                            </p>
+
+                            <div class="d-grid gap-2">
+
+
+                                <a asp-controller="Reservas"
+                                   asp-action="Detalles"
+                                   asp-route-id="@vehiculo.IdVehiculo"
+                                   class="btn btn-outline-primary">
+                                    Ver detalles y fotografías
+                                </a>
+
+
+                                <a asp-controller="Reservas"
+                                   asp-action="Crear"
+                                   asp-route-id="@vehiculo.IdVehiculo"
+                                   class="btn btn-primary">
+                                    Reservar vehículo
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Actualmente no hay vehículos disponibles.
+        </div>
+    }
+
+</div>

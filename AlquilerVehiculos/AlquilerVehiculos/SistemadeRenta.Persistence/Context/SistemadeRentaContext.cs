@@ -14,6 +14,11 @@ namespace SistemadeRenta.Persistence.Context
         public DbSet<Usuario> Usuarios => Set<Usuario>();
         public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
         public DbSet<VehiculoImagen> VehiculoImagenes => Set<VehiculoImagen>();
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Reserva> Reservas { get; set; }
+        public DbSet<AlquilerContrato> AlquilerContratos { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -78,6 +83,66 @@ namespace SistemadeRenta.Persistence.Context
                 e.Property(i => i.IdPublico)
                       .HasMaxLength(255);
 
+            });
+
+
+            // Configuración de Cliente
+            modelBuilder.Entity<Cliente>(e =>
+            {
+                e.ToTable("Cliente", "dbo");
+
+                e.HasKey(c => c.IdCliente);
+
+                e.Property(c => c.IdUsuario)
+                    .IsRequired(false);
+
+                e.Property(c => c.Nombre)
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                e.Property(c => c.Apellido)
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                e.Property(c => c.DocumentoIdentidad)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                e.Property(c => c.EstadoVerificacion)
+                    .HasMaxLength(30)
+                    .IsRequired();
+
+                e.HasOne(c => c.Usuario)
+                    .WithMany()
+                    .HasForeignKey(c => c.IdUsuario)
+                    .IsRequired(false)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
+
+            // Configuración de Reserva
+            modelBuilder.Entity<Reserva>(e =>
+            {
+                e.ToTable("Reserva", "dbo");
+
+                e.HasKey(r => r.IdReserva);
+
+                e.HasOne(r => r.Cliente)
+                    .WithMany()
+                    .HasForeignKey(r => r.IdCliente)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                e.HasOne(r => r.Vehiculo)
+                    .WithMany()
+                    .HasForeignKey(r => r.IdVehiculo)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                e.Property(r => r.CostoEstimado)
+                    .HasPrecision(10, 2);
+
+                e.Property(r => r.EstadoReserva)
+                   .HasMaxLength(20)
+                   .IsRequired();
             });
 
         }

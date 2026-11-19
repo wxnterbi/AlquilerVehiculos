@@ -1,0 +1,120 @@
+﻿@model IEnumerable<SistemadeRenta.Domain.Entities.Reserva>
+
+@{
+    ViewData["Title"] = "Solicitudes de reserva";
+}
+
+<div class="container mt-4 mb-5">
+
+    <h2 class="mb-4">Solicitudes de reserva</h2>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["Mensaje"]
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Documento</th>
+                        <th>Vehículo</th>
+                        <th>Fecha de recogida</th>
+                        <th>Fecha de devolución</th>
+                        <th>Costo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var reserva in Model)
+                    {
+                        <tr>
+                            <td>
+                                @reserva.Cliente.Nombre
+                                @reserva.Cliente.Apellido
+                            </td>
+
+                            <td>
+                                @reserva.Cliente.DocumentoIdentidad
+                            </td>
+
+                            <td>
+                                @reserva.Vehiculo.Marca
+                                @reserva.Vehiculo.Modelo
+                            </td>
+
+                            <td>
+                                @reserva.FechaInicio.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+
+                            <td>
+                                @reserva.FechaFin.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+
+                            <td>
+                                @reserva.CostoEstimado.ToString("C")
+                            </td>
+
+                            <td>
+                                <span class="badge bg-warning text-dark">
+                                    @reserva.EstadoReserva
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="d-flex gap-2">
+
+                                    <form asp-action="Aprobar"
+                                          method="post">
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@reserva.IdReserva" />
+
+                                        <button type="submit"
+                                                class="btn btn-success btn-sm">
+                                            Aprobar
+                                        </button>
+
+                                    </form>
+
+                                    <form asp-action="Rechazar"
+                                          method="post">
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@reserva.IdReserva" />
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm">
+                                            Rechazar
+                                        </button>
+
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Actualmente no hay solicitudes pendientes.
+        </div>
+    }
+
+</div>
+
